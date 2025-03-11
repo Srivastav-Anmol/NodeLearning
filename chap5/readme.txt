@@ -1,0 +1,2 @@
+In this we will learn about writing clean code where functions will be put in another folder called function.
+In simple in main file i.e index.js we will import all necessary functions rather than writing same in original file
