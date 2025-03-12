@@ -1,10 +1,14 @@
 const express=require("express")
 const path=require("path")
-const urlRoute=require('./routes/url')
-const staticRoute=require('./routes/staticRoutes')
+
 
 const URL=require('./models/url')
 const {connectMongoDb}=require("./connect")
+
+const urlRoute=require('./routes/url')
+const staticRoute=require('./routes/staticRoutes')
+const userRoute=require('./routes/user')
+
 const app=express()
 
 app.set('port',process.env.PORT||3000)
@@ -18,6 +22,7 @@ app.set("views",path.resolve("./views"))
 
 
 app.use("/url",urlRoute)
+app.use('/user',userRoute)
 app.use('/',staticRoute)
 
 app.get('/url/test',async(req,res)=>{
