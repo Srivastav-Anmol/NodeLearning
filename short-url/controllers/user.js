@@ -18,9 +18,8 @@ async function handleUserLogin(req,res){
         return res.render('login',{
     error:"Invalid username or password"
     })
-    const sessionId=uuidv4()
-    setUser(sessionId,user)
-    res.cookie('uid',sessionId)
+    const token = setUser(user)
+    res.cookie('uid',token)
     return res.redirect("/")//idhr se redirect ho jaoage url shortner website pe
 }
 module.exports={
