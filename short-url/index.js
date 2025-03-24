@@ -3,7 +3,7 @@ const path=require("path")
 const cookieParser=require("cookie-parser")
 
 const URL=require('./models/url')
-const {restrictToLoggedInUserOnly,checkAuth}=require('./middlewares/auth')
+const {checkForAuthentication,restrictTo}=require('./middlewares/auth')
 const {connectMongoDb}=require("./connect")
 
 const urlRoute=require('./routes/url')
@@ -18,14 +18,15 @@ connectMongoDb('mongodb://localhost:27017/short-url').then(()=>console.log("Mong
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(cookieParser())
+app.use(checkForAuthentication)
 
 app.set("view engine","ejs") 
 app.set("views",path.resolve("./views"))
 
 
-app.use("/url",restrictToLoggedInUserOnly,urlRoute)
+app.use("/url",restrictTo(["NORMAL","ADMIN"]),urlRoute)
 app.use('/user',userRoute)
-app.use('/',checkAuth,staticRoute)
+app.use('/',staticRoute)
 
 app.get('/url/test',async(req,res)=>{
     const allUrls= await URL.find({})
